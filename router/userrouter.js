@@ -6,7 +6,7 @@ import {
     updateProfile,
      } from "../controller/usercontroller.js";
  import { userAddSchema } from "../models/user.js";
- import checkAuth from "../middleware/checkAuth.js";
+ import { checkAuth } from "../middleware/checkAuth.js";
  import validate from "../middleware/validationHandler.js";
  
  const router = express.Router();

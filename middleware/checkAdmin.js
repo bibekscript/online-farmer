@@ -1,12 +1,9 @@
-const checkAdmin = (req,res,next) => {
-    const isAdmin = req.body.isAdmin;
-    if (isAdmin) {
-        next();
-} else {
-    res.status(403).send
-    ({message:"You are not allowed tho perform the activity !"})
-
-}
+const checkAdmin = (req, res, next) => {
+  if (req.user && req.user.isAdmin) {
+    next();
+  } else {
+    res.status(403).send({ message: "Admin access only" });
+  }
 };
 
-export default checkAdmin;
+export { checkAdmin };

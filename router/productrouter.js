@@ -8,7 +8,6 @@ import {
 } from "../controller/productcontroller.js";
 
 import { productAddSchema } from "../models/product.js";
-
 const router = express.Router();
 
 router.get("/", getProduct);
