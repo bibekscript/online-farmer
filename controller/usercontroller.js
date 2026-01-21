@@ -28,41 +28,39 @@ const signup = async (req,res) => {
     };
 };
 
-const login = async(req,res) => {
-    try {
-        const {email,password}= req.body;
-        const user = await User.findOne({email});
-        if(!user) return res.status(404).send({error: "User not found"});
+const login = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const user = await User.findOne({ email });
 
-        if( await user.matchPassword(password)){
-            createToken(res, user._id);
-            res.send({
-                message:"Login sucess !",
-                user:{
-                    fullname:user.fullname,
-                    email:user.email,
-                    isAdmin:user.isAdmin,
-                },
-            });
-        } else{
-         res.status(400).send({error:"Password didn't matched"})
-        }
-    } catch (error) {
-        res.status(500).send({error:error.message})
-    };
+    if (!user) {
+      return res.status(404).send({ error: "User not found" });
+    }
+    const isMatch = await user.matchPassword(password);
+    if (!isMatch) {
+      return res.status(400).send({ error: "Invalid email or password" });
+    }
+    createToken(res, user._id);
+    res.status(200).send({
+      message: "Login success!",
+      user: {
+        fullname: user.fullname,
+        email: user.email,
+        isAdmin: user.isAdmin,
+      },
+    });
+  } catch (error) {
+    res.status(500).send({ error: error.message });
+  }
 };
 
-const logout = async(req,res) => {
+const logout = async(req, res) => {
     try {
-        if(req.user){
-            res.clearcookie("jwt");
-            res.send({message:"Logout sucess !"});
-        } else {
-            res.status(400).send({message:"User not logged in !"})
-        };
+        res.clearCookie("jwt"); 
+        res.status(200).send({message: "Logout success!"});
     } catch (error) {
-        res.status(500).send({error:error.message})
-    };
+        res.status(500).send({error: error.message});
+    }
 };
 
 const getUserprofile = async(req,res) => {
@@ -79,7 +77,16 @@ const updateProfile = async(req,res) => {
 
         if(req.body.password){
             user.password = req.user.password;
-        };
+        }
+        await user.save();
+        res.status(200).send({
+            message:"User updated",
+            user:{
+                fullname: user.fullname,
+                email: user.email,
+            },
+
+        })
     } catch (error) {
         res.status(500).send({error:error.message});
     };

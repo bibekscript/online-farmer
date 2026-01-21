@@ -11,7 +11,7 @@ import {
  
  const router = express.Router();
 
- router.post("/signup",validate(userAddSchema),signup);
+ router.post("/signup", validate(userAddSchema), signup);
  router.post("/login",login);
  router.post("/logout",checkAuth,logout);
  router.post("/updateprofile",checkAuth,updateProfile);
