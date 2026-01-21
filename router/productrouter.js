@@ -8,6 +8,8 @@ import {
 } from "../controller/productcontroller.js";
 
 import { productAddSchema } from "../models/product.js";
+import { checkAuth } from "../middleware/checkAuth.js";
+import { checkAdmin } from "../middleware/checkAdmin.js";
 const router = express.Router();
 
 router.get("/", getProduct);
