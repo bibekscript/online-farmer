@@ -13,7 +13,7 @@ import { checkAdmin } from "../middleware/checkAdmin.js";
 const router = express.Router();
 
 router.get("/", getProduct);
-router.post("/", addProduct);
+router.post("/",checkAuth,checkAdmin, addProduct);
 router.get("/:id", getProductById);
 router.put("/:id", updateProduct);
 router.delete("/:id", deleteProduct);
